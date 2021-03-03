@@ -1,15 +1,17 @@
 
 
-const daysRef = document.querySelector('[data-value="days"]');
-const hoursRef = document.querySelector('[data-value="hours"]');
-const minsRef = document.querySelector('[data-value="mins"]');
-const secsRef = document.querySelector('[data-value="secs"]');
-
 class CountdownTimer {
     constructor({selector, targetDate}) {
         this.selector = selector; 
-        this.targetDate = targetDate.getTime();
-        setInterval(() => {
+        this.targetDate = targetDate;
+        this.refs = {
+            days: document.querySelector(`${this.selector} [data-value="days"]`),
+            hours: document.querySelector(`${this.selector} [data-value="hours"]`),
+            mins: document.querySelector(`${this.selector} [data-value="mins"]`),
+            secs: document.querySelector(`${this.selector} [data-value="secs"]`),
+        }
+
+           setInterval(() => {
             this.currentTime = Date.now();
             this.updateTime(this.targetDate - this.currentTime);
         }, 1000);
@@ -20,10 +22,10 @@ class CountdownTimer {
         this.hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
         this.mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
         this.secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
-        daysRef.textContent = `${this.days} `;
-        hoursRef.textContent = `${this.hours} `;
-        minsRef.textContent = `${this.mins} `;
-        secsRef.textContent = `${this.secs} `;
+        this.refs.days.textContent = `${this.days} `;
+        this.refs.hours.textContent = `${this.hours} `;
+        this.refs.mins.textContent = `${this.mins} `;
+        this.refs.secs.textContent = `${this.secs} `;
     }
 
     pad(value) {
